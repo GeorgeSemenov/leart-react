@@ -55,12 +55,13 @@ class Game extends React.Component {
       history:[
         {squares: Array(9).fill(null),}
       ],
+      stepNumber : 0,
       xIsNext: true,
     };
   }
 
   handleClick(i){
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();//Создаём копию массива squares из конструктора(это состояние), но зачем мы создаём копию? Это будет объясненно в графе why immutability is important
     if(calculateWinner(squares) || squares[i]){return}//Если победитель уже найден или ячейка уже заполненна, то функция не сработает.
@@ -69,18 +70,38 @@ class Game extends React.Component {
       history: history.concat([{//Создаём новый массив в котором есть вся предыдущая история + новая версия squares
         squares: squares
       }]),
+      stepNumber: history.length,
       xIsNext : !this.state.xIsNext,
     })
     // console.log(`hist = ${JSON.stringify(history)}`);
   }
 
+  jumpTo(step){
+    this.setState({
+      stepNumber: step,
+      xIsNext : (step % 2) === 0, //Если чётное , то будет true в противном случае будет false
+    })
+  }
+
   render() {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     let status;
     if(winner){status = `Winner is bomj ${winner}`}
     else{status = `Next player: ${this.state.xIsNext? 'X' : 'O'}`;}
+
+    const moves = history.map((step, move) => {
+      const desc = move?
+        `poshel k move # ${move}` :
+        `poshel v game start`;
+      return (
+        <li key={move}>
+          <button onClick = {() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      )
+    });
+
     return (
       <div className="game">
         <div className="game-board">
@@ -91,7 +112,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div> {status }</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
