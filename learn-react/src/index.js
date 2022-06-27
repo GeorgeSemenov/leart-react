@@ -15,9 +15,12 @@ function Square(props) {//Т.к. данный компонент не содер
   );
 }
 
-function changeListOrderButton(){
+function ChangeListOrderButton(props){
   return (
-    <button>
+    <button
+      onClick={props.changeOrderList} 
+    >
+      {props.someText}
     </button>
   )
 }
@@ -34,22 +37,17 @@ class Board extends React.Component {
     );
   }
 
-  renderRow(k){
-    let row = [];
-    for(let i=0; i<3; i++){
-      row.push(this.renderSquare(i+k*3))
-    }
-    return (
-      <div className="board-row">
-        {row}
-      </div>
-    );
-  }
-
   renderBoard(){
     let board = []
     for(let i = 0; i<3; i++){
-      board.push(this.renderRow(i))
+      let row = [];
+
+      for (let k = 0; k<3; k++){row.push(this.renderSquare(k+i*3))}
+      board.push(
+        <div className="board-row">
+          {row}
+        </div>
+      )
     }
     return board
   }
@@ -75,6 +73,12 @@ class Game extends React.Component {
       position: undefined,
       isMoveListDescending: true,
     };
+  }
+
+  changeOrderList(){
+    this.setState({
+      isMoveListDescending: !this.state.isMoveListDescending
+    })
   }
 
   handleClick(i){
@@ -121,13 +125,14 @@ class Game extends React.Component {
         `poshel k move # ${move}` :
         `poshel v game start`;
       desc = (move== history.length-1)? <b>{desc}</b> : desc;
-      let key = (step % 2) === 0? move: history.length - move;
+      let key = move;
       return (
         <li key={key}>
           <button onClick = {() => this.jumpTo(move)}>{desc}</button>
         </li>
       )
     });
+    let renderedMoves = this.state.isMoveListDescending? moves: moves.reverse();
 
     return (
       <div className="game">
@@ -140,8 +145,10 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div> {status }</div>
-          <ol>{moves}</ol>
-          <changeListOrderButton
+          <ol>{renderedMoves}</ol>
+          <ChangeListOrderButton
+            someText= "Изменить порядок списка"
+            changeOrderList= {() => this.changeOrderList()}
           />
         </div>
       </div>
