@@ -1,26 +1,31 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 class ClassCounter extends React.Component{
-  const [counter,setCounter] = useState(0);
-
-  function incFunc(){
-    setCounter(counter+1)
-    console.log(`counter = ${counter}`);
+  constructor(props){
+    super(props);
+    this.state = {
+      count: 0
+    }
+    this.incFunc = this.incFunc.bind(this);
+    this.decFunc = this.decFunc.bind(this);
   }
-  function decFunc(){
-    setCounter(counter-1)
-    console.log(`counter= ${counter}`)
+
+  incFunc(){
+    this.setState({count: this.state.count + 1});
+  }
+  decFunc(){
+    this.setState({count: this.state.count - 1});
   }
 
   render(){
     return (
       <div>
-        <h1> count = {counter}</h1>
-        <button onClick={incFunc}>Increment</button>
-        <button onClick={decFunc}>Decrement</button>
+        <h1> count = {this.state.count}</h1>
+        <button onClick={this.incFunc}>Increment</button>
+        <button onClick={this.decFunc}>Decrement</button>
       </div>
     )
   }
 }
 
-export default Counter;
+export default ClassCounter;
