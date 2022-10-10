@@ -4,9 +4,9 @@ function PostItem(props){
   return(
     <div className = "post">
       <div className = "post__content">
-        <strong>{props.post.id}.{props.post.title}</strong>
+        <strong>{props.number}.{props.post.title}</strong>
         <p> 
-          {props.post.desc}
+          {props.post.body}
         </p>
       </div>
       <div className="post__btns">
