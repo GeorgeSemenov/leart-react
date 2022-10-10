@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
+import MyButton from './UI/button/MyButton'
 
-function PostItem(props){
+function PostItem({removePostFromPosts,...props}){
+  const removePost = ()=>{
+    removePostFromPosts(props.post)
+  }
   return(
     <div className = "post">
       <div className = "post__content">
@@ -10,7 +14,9 @@ function PostItem(props){
         </p>
       </div>
       <div className="post__btns">
-        <button>Удалить падлу</button>
+        <MyButton
+          onClick ={()=>{removePostFromPosts(props.post)}}
+        >Удалить падлу</MyButton>
       </div>
     </div>
   )

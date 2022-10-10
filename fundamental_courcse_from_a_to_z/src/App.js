@@ -2,9 +2,9 @@ import React, {useState,useRef} from 'react';
 import Counter from './components/Counter.jsx';
 import ClassCounter from './components/ClassCounter.jsx';
 import PostList from './components/PostList.jsx';
-import MyButton from './components/UI/button/MyButton.jsx'
-import MyInput from './components/UI/input/MyInput.jsx'
-import PostForm from './components/PostFrom.jsx'
+import PostForm from './components/PostForm.jsx'
+import MySelect from './components/UI/select/MySelect.jsx'
+
 import './styles/App.css';
 
 function App() {
@@ -13,25 +13,40 @@ function App() {
     {id:2, title: "php-post-title", body: "php - is programm language"},
     {id:3, title: "python-post-title", body: "python - is programm language"},
   ])
-const [post,setPost] = useState({title: '', body:''})
-const bodyInputRef = useRef();
-const addNewPost = (e)=>{
-    e.preventDefault();
-    const newPost = {
-      id: Date.now(),
-      title: post.title,
-      body: post.body
-    }
-    setPosts([...posts,{...post, id: Date.now()}])
-    setPost({title: '', body: ''})
+  const bodyInputRef = useRef();
+
+  const addNewPostToPosts = (newPost)=>{
+    setPosts([...posts,newPost])
+  }
+
+  const removePostFromPosts = (post)=>{
+    setPosts(posts.filter((item)=>{return item.id !==post.id}))
   }
   return (
     <div className="App">
-      <PostForm/>
-      <PostList
-        posts={posts}
-        title="Спиське постой"
-      />      
+      <PostForm
+        addNewPostToPosts = {addNewPostToPosts}
+      />
+      <hr style={{margin: "15px 0"}}/>
+      <MySelect
+        defaultValue = "Сортировка"
+        options = {[
+          {value:"title", name:"По заголовку"},
+          {value:"name", name:"По описанию"}
+        ]}
+      />
+      {
+        posts.length !=0 
+          ?
+          <PostList
+            posts={posts}
+            title="Спиське постой"
+            removePostFromPosts = {removePostFromPosts}
+          />    
+          : 
+          <h2 style={{textAlign: "center"}}> Посты Закончились.</h2>
+      }
+            
     </div>
   );
 }

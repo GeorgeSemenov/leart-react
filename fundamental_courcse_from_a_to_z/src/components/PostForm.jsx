@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
+import MyButton from './UI/button/MyButton.jsx'
+import MyInput from './UI/input/MyInput.jsx'
 
-function PostForm(props){
+function PostForm({addNewPostToPosts, ...props}){
+  const [post,setPost] = useState({title: '', body:''})
+  const addNewPost = (e)=>{
+    e.preventDefault();
+    addNewPostToPosts({...post, id: Date.now()})
+    setPost({title: '', body: ''})//обнуляем инпуты
+  }
   return(
     <form>
       {/*управляемый элемент*/}
