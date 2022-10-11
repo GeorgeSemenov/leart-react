@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 function PostForm(props){
+  const [post,setPost] = useState({title: '', body:''})
   return(
     <form>
       {/*управляемый элемент*/}

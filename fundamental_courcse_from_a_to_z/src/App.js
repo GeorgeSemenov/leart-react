@@ -13,7 +13,6 @@ function App() {
     {id:2, title: "php-post-title", body: "php - is programm language"},
     {id:3, title: "python-post-title", body: "python - is programm language"},
   ])
-const [post,setPost] = useState({title: '', body:''})
 const bodyInputRef = useRef();
 const addNewPost = (e)=>{
     e.preventDefault();
