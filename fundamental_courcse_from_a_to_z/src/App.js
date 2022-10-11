@@ -21,10 +21,10 @@ function App() {
   }
 
   const sortPosts = (sort)=>{
-    console.log(`sort = ${sort}`);
-    setSelectedSort([...posts].sort((a,b)=>{
-      a[sort].localeCompare(b[sort])
+    setPosts([...posts].sort((a,b)=>{
+      return a[sort].localeCompare(b[sort])
     }))
+    setSelectedSort(sort);
   }
 
   const removePostFromPosts = (post)=>{
@@ -42,7 +42,7 @@ function App() {
         defaultValue = "Сортировка"
         options = {[
           {value:"title", name:"По заголовку"},
-          {value:"name", name:"По описанию"}
+          {value:"body", name:"По описанию"}
         ]}
       />
       {
