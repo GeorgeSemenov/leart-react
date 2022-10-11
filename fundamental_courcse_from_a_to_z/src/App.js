@@ -10,13 +10,21 @@ import './styles/App.css';
 function App() {
   const [posts,setPosts] = useState([
     {id:1, title: "JS-post-title", body: "JavaScript - is programm language"},
-    {id:2, title: "php-post-title", body: "php - is programm language"},
-    {id:3, title: "python-post-title", body: "python - is programm language"},
+    {id:2, title: "php-post-title", body: "python - is programm language"},
+    {id:3, title: "python-post-title", body: "php - is programm language"},
   ])
+  const [selectedSort, setSelectedSort] = useState('');
   const bodyInputRef = useRef();
 
   const addNewPostToPosts = (newPost)=>{
     setPosts([...posts,newPost])
+  }
+
+  const sortPosts = (sort)=>{
+    console.log(`sort = ${sort}`);
+    setSelectedSort([...posts].sort((a,b)=>{
+      a[sort].localeCompare(b[sort])
+    }))
   }
 
   const removePostFromPosts = (post)=>{
@@ -29,6 +37,8 @@ function App() {
       />
       <hr style={{margin: "15px 0"}}/>
       <MySelect
+        value = {selectedSort}
+        onChange = {sortPosts}
         defaultValue = "Сортировка"
         options = {[
           {value:"title", name:"По заголовку"},

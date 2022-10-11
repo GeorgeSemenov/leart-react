@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 
-function MySelect({options, defaultValue}){
+function MySelect({options, defaultValue, value, onChange}){
   return(
     <div>
-      <select>
-        <option disabled value={defaultValue}>Сортир овка по названию</option>
+      <select
+        value={value}
+        onChange={event => onChange(event.target.value)}
+      >
+        <option disabled value="">{defaultValue}</option>
         {
           options.map(option=>
-            <option value={option.value}>{option.name}</option>    
+            <option key={option.value} value={option.value}>{option.name}</option>    
           )
         }
         
