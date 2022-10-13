@@ -5,6 +5,8 @@ import PostList from './components/PostList.jsx';
 import PostForm from './components/PostForm.jsx'
 import MyInput from './components/UI/input/MyInput.jsx'
 import PostFilter from './components/PostFilter.jsx'
+import MyButton from './components/UI/button/MyButton.jsx'
+import MyModal from './components/UI/MyModal/MyModal.jsx'
 
 import './styles/App.css';
 
@@ -13,57 +15,55 @@ function App() {
     {id:1, title: "JS-post-title", body: "JavaScript - is programm language"},
     {id:2, title: "php-post-title", body: "python - is programm language"},
     {id:3, title: "python-post-title", body: "php - is programm language"},
-  ])  
+  ]) 
+  const [modal,setModal] = useState(false)
+
   const [filter,setFilter] = useState({sort:'',query:''}) 
-  
   const bodyInputRef = useRef();
-
-  function getSortedPosts(){
-    console.log(`getSortedPosts called`);
-    if(filter.query){
-      return [...posts].sort((a,b)=>{
-        return a[filter.sort].localeCompare(b[filter.sort])
-      })
+  const sortedPosts   = useMemo(()=>{
+    if(filter.sort){
+      return [...posts].sort((a,b)=>a[filter.sort].localeCompare(b[filter.sort]) )
     }
-    else{
-      return posts
-    }
-  }
-
-  const sortedPosts   = useMemo(getSortedPosts,[filter.query, posts]);
+    else{ return posts }
+  },[filter.sort, posts]);
   const sortedAndSearchedPosts = useMemo(()=>{
+    console.log(`sortedAndSearchedPosts updated`);
     return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query.toLowerCase()))
-  },[filter.query,sortedPosts])
-
+  },[filter.query, sortedPosts])
   const addNewPostToPosts = (newPost)=>{
-    setPosts([...posts,newPost])
+    setPosts([...posts, newPost])
+    setModal(false);
   }
-
   const removePostFromPosts = (post)=>{
     setPosts(posts.filter((item)=>{return item.id !==post.id}))
   }
+
   return (
     <div className="App">
-      <PostForm
-        addNewPostToPosts = {addNewPostToPosts}
-      />
+      <MyButton
+        style={{marginTop: "30px"}}
+        onClick = {()=>setModal(true)}
+      >
+        Создать пыст.
+      </MyButton>
+      <MyModal
+        visible={modal}
+        setVisible = {setModal}
+      >
+        <PostForm
+          addNewPostToPosts = {addNewPostToPosts}
+        />
+      </MyModal>
       <hr style={{margin: "15px 0"}}/>
       <PostFilter
         filter={filter}
         setFilter={setFilter}
       />
-      {
-        sortedAndSearchedPosts.length !=0 
-          ?
-          <PostList
-            posts={sortedAndSearchedPosts}
-            title="Спиське постой"
-            removePostFromPosts = {removePostFromPosts}
-          />    
-          : 
-          <h2 style={{textAlign: "center"}}> Посты Закончились.</h2>
-      }
-            
+      <PostList
+        posts={sortedAndSearchedPosts}
+        title="Спиське постой"
+        removePostFromPosts = {removePostFromPosts}
+      />
     </div>
   );
 }
