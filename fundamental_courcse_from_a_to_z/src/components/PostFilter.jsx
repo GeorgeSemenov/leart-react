@@ -15,7 +15,7 @@ function PostFilter({filter,setFilter, ...props}) {
       />
       <MySelect
         value = {filter.sort}
-        onChange = {sortPosts}
+        onChange = {(selectedSort)=>setFilter({...filter, sort:selectedSort})}
         defaultValue = "Сортировка"
         options = {[
           {value:"title", name:"По заголовку"},

@@ -165,3 +165,7 @@ useMemo - производит вычисления указанные в callba
 useMemo - запускается повторно только в том случае, если какой-то элемент из deps был изменён.
 В нашем случае это будет выглядеть так:
 const sortedPost   = useMemo(getSortedPosts,[selectedSort, posts]); вот и всё.
+
+---Внимание! select возвращает value выбранной опции. Поэтому бессмысленно
+	ожидать возвращения e.target.value вместо этого лучше прописать :
+	onChange = {(selectedSort)=>setFilter({...filter, sort:selectedSort})}

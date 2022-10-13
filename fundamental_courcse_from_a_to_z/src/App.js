@@ -18,8 +18,8 @@ function App() {
   
   const bodyInputRef = useRef();
 
-  function getsortedPostss(){
-    console.log(`getsortedPostss called`);
+  function getSortedPosts(){
+    console.log(`getSortedPosts called`);
     if(filter.query){
       return [...posts].sort((a,b)=>{
         return a[filter.sort].localeCompare(b[filter.sort])
@@ -30,7 +30,7 @@ function App() {
     }
   }
 
-  const sortedPosts   = useMemo(getsortedPostss,[filter.query, posts]);
+  const sortedPosts   = useMemo(getSortedPosts,[filter.query, posts]);
   const sortedAndSearchedPosts = useMemo(()=>{
     return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query.toLowerCase()))
   },[filter.query,sortedPosts])
@@ -39,14 +39,9 @@ function App() {
     setPosts([...posts,newPost])
   }
 
-  const sortPosts = (sort)=>{
-    setFilter({...filter,sort});
-  }
-
   const removePostFromPosts = (post)=>{
     setPosts(posts.filter((item)=>{return item.id !==post.id}))
   }
-  console.log(`sortedAndSearchedPosts = ${sortedAndSearchedPosts}`);
   return (
     <div className="App">
       <PostForm
