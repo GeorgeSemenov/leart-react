@@ -176,3 +176,5 @@ const sortedPost   = useMemo(getSortedPosts,[selectedSort, posts]); вот и в
   >
     {children}
 </div>
+
+---За анимацию отвечает библиотёка react transition group
