@@ -1,0 +1,13 @@
+figure.Event{
+  img.EventPic<picRef>
+  figcaption.EventTitle<title>
+  ul.EventLabels[labels]{
+    li.EventLabel<text,modificator>
+  }
+}
+
+{
+  picRef:"",
+  title: "",
+  labels: [{text:"",modificator:"top/middle/bottom"}]
+}

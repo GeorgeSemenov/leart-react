@@ -178,3 +178,16 @@ const sortedPost   = useMemo(getSortedPosts,[selectedSort, posts]); вот и в
 </div>
 
 ---За анимацию отвечает библиотёка react transition group
+https://reactcommunity.org/react-transition-group/transition-group
+Устанавливаем с помостчью следующей команды:
+npm install react-transition-group --save
+
+Сами анимации выполняются с помощью импортируемого компонента TransitionGroup(не забудь его импортировать import TransitionGroup from 'react-transition-group';)
+см PostList.jsx
+Также, элементы которые необходимо анимировать - обёрнуты в другой импортируемый элемент CSSTransition
+
+при анимировании нужно будет создавать css классы, которые названы по определённому шаблону
+имя_твоего_класса-enter -
+имя_твоего_класса-enter-active- при добавлении элемента, 
+имя_твоего_класса-exit , 
+имя_твоего_класса-exit-active - при удалении элемента

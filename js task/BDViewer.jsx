@@ -1,0 +1,13 @@
+table.BDViewer{
+  tr[BD[0].properties]{
+    th.BD.properties
+  }
+  BD.map(row=>
+    <tr> 
+      row.map(prop=>
+        <td>
+        {prop}
+        </td>
+      )
+    </tr>)
+}

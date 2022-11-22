@@ -1,0 +1,26 @@
+div.controlPannel{(дата события, цена для 
+  взрослого/детского/льготного/группового билета, 
+  возможность указать количество этих билетов, 
+  и суммарное значение стоимостей )
+  h1.CPTitle<title>
+  div.CPCounters[counters]{
+    div.Counter{
+      span.CounterTitle<title>
+      div.CounterBtn<incrementSymbol="+">
+      input.CounterResult<defaultValue=0>
+      div.CounterBtn<decrementSymbol="-">
+    }
+  }
+  .CPCheckboxContainer{
+    input.CPCheckbox
+    label.CPCheckboxLabel<Checkboxlabel>
+  }
+  button.CPBuyButton<buyButtonText>
+}
+
+{
+  title: "",
+  counters:[{title:"",incrementSymbol="+",defaultValue=0,decrementSymbol ="-"}],
+  Checkboxlabel:"Выводить данные в БД минуя нажатие кнопки 'купить'"
+  buyButtonText:"Купить",
+}
