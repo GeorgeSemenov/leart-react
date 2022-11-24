@@ -22,17 +22,17 @@
   align-items: center;
 }
 
-.post-enter {
-  opacity: 0;
+.post-enter {/*Состояние элемента с классом post перед началом подгрузки*/
+  transform: translateX(350px);
 }
-.post-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
+.post-enter-active {/*Состояние элемента с классом post после подгузник*/
+  transform: translateX(0);
+  transition: transform 500ms ease-in;
 }
-.post-exit {
-  opacity: 1;
+.post-exit {/*Состояние элемента с классом post перед началом выгрузки*/
+  transform: translateX(0);
 }
-.post-exit-active {
-  transform: translateX(-150px);
-  transition: opacity 500ms ease-in;
+.post-exit-active {/*Состояние элемента с классом post после выгрузки*/
+  transform: translateX(-350px);
+  transition: transform 500ms ease-in;
 }

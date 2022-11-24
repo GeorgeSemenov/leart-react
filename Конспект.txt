@@ -187,7 +187,48 @@ npm install react-transition-group --save
 Также, элементы которые необходимо анимировать - обёрнуты в другой импортируемый элемент CSSTransition
 
 при анимировании нужно будет создавать css классы, которые названы по определённому шаблону
-имя_твоего_класса-enter -
-имя_твоего_класса-enter-active- при добавлении элемента, 
-имя_твоего_класса-exit , 
-имя_твоего_класса-exit-active - при удалении элемента
+**имя_твоего_класса-enter** - Состояние элемента с классом post перед началом подгрузки
+**имя_твоего_класса-enter-active**- Состояние элемента с классом post перед началом выгрузки, 
+**имя_твоего_класса-exit** - Состояние элемента с классом post перед началом выгрузки, 
+**имя_твоего_класса-exit-active** - Состояние элемента с классом post после выгрузки
+Пример (см PostList.jsx и App.css:
+```jsx
+<TransitionGroup>
+      {
+        posts.map((post,index)=>
+          <CSSTransition
+              key = {post.id}
+              timeout={500}
+              classNames="post"
+          >
+            <PostItem
+              number = {index + 1}
+              post={post}
+              removePostFromPosts = {removePostFromPosts}
+            />
+          </CSSTransition>
+        )
+      }
+      </TransitionGroup>
+```
+Обрати внимание, что я завернул элемент, который хочу анимировать (PostItem) в TransitionGroup и в CSSTransition, т.к. я хочу добавить анимацию с помощью transition, key я поставил элемент CSSTransition, т.к. он теперь является самым высоким элементом списка.
+Теперь осталось описать, как будет работать transition в css 
+```css
+/*App.css*/
+.post-enter {/*Состояние элемента с классом post перед началом подгрузки*/
+  transform: translateX(350px);
+}
+.post-enter-active {/*Состояние элемента с классом post после подгузник*/
+  transform: translateX(0);
+  transition: transform 500ms ease-in;
+}
+.post-exit {/*Состояние элемента с классом post перед началом выгрузки*/
+  transform: translateX(0);
+}
+.post-exit-active {/*Состояние элемента с классом post после выгрузки*/
+  transform: translateX(-350px);
+  transition: transform 500ms ease-in;
+}
+```
+---Создание своих хуков
+При создании хука нужно придерживаться договорённости - ==первые три буквы будущего хука начинаются с use==
