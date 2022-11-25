@@ -7,6 +7,7 @@ import MyInput from './components/UI/input/MyInput.jsx'
 import PostFilter from './components/PostFilter.jsx'
 import MyButton from './components/UI/button/MyButton.jsx'
 import MyModal from './components/UI/MyModal/MyModal.jsx'
+import {usePosts} from './hooks/usePosts.js';
 
 import './styles/App.css';
 
@@ -17,10 +18,10 @@ function App() {
     {id:3, title: "python-post-title", body: "php - is programm language"},
   ]) 
   const [modal,setModal] = useState(false)
-
   const [filter,setFilter] = useState({sort:'',query:''}) 
+  const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
   const bodyInputRef = useRef();
-  
+    
   const addNewPostToPosts = (newPost)=>{
     setPosts([...posts, newPost])
     setModal(false);
