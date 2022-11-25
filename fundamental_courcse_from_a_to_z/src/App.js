@@ -21,10 +21,6 @@ function App() {
   const [filter,setFilter] = useState({sort:'',query:''}) 
   const bodyInputRef = useRef();
   
-  const sortedAndSearchedPosts = useMemo(()=>{
-    console.log(`sortedAndSearchedPosts updated`);
-    return sortedPosts.filter(post=>post.title.toLowerCase().includes(filter.query.toLowerCase()))
-  },[filter.query, sortedPosts])
   const addNewPostToPosts = (newPost)=>{
     setPosts([...posts, newPost])
     setModal(false);
