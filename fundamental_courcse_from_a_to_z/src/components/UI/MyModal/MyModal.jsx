@@ -4,7 +4,6 @@ import cl from './MyModal.module.css'
 function MyModal({children, visible, setVisible, ...props}) {
   const rootClasses = [cl.myModal]
   if(visible){rootClasses.push(cl.active)}
-  console.log(`rootClasses = ${rootClasses}`);
   return(
     <div
       className = {rootClasses.join(' ')}

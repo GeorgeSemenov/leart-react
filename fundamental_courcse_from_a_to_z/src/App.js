@@ -1,4 +1,4 @@
-import React, {useState,useRef,useMemo} from 'react';
+import React, {useState,useRef,useMemo, useEffect} from 'react';
 import Counter from './components/Counter.jsx';
 import ClassCounter from './components/ClassCounter.jsx';
 import PostList from './components/PostList.jsx';
@@ -9,6 +9,7 @@ import MyButton from './components/UI/button/MyButton.jsx'
 import MyModal from './components/UI/MyModal/MyModal.jsx'
 import {usePosts} from './hooks/usePosts.js';
 import axios from 'axios';
+import PostService from './API/PostService.js';
 
 import './styles/App.css';
 
@@ -21,6 +22,9 @@ function App() {
   const [modal,setModal] = useState(false)
   const [filter,setFilter] = useState({sort:'',query:''}) 
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
+  useEffect(()=>{
+    fetchPosts();
+  },[]);//массив зависимостей пуст, значит колбек(подтягивание пыстов) сработает лишь один раз (при первичной отрисовки кекпонента)
   const bodyInputRef = useRef();
     
   const addNewPostToPosts = (newPost)=>{
@@ -29,8 +33,8 @@ function App() {
   }
 
   async function fetchPosts(){//Функция асинхронная, чтобы можно было использовать await
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-    setPosts(response.data);
+    const posts = await PostService.getAll();
+    setPosts(posts);
   }
 
   const removePostFromPosts = (post)=>{
