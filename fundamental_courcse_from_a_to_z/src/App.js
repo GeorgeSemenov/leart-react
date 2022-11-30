@@ -10,6 +10,7 @@ import MyModal from './components/UI/MyModal/MyModal.jsx'
 import {usePosts} from './hooks/usePosts.js';
 import axios from 'axios';
 import PostService from './API/PostService.js';
+import Loader from './components/UI/Loader/Loader.jsx';
 
 import './styles/App.css';
 
@@ -22,9 +23,12 @@ function App() {
   const [modal,setModal] = useState(false)
   const [filter,setFilter] = useState({sort:'',query:''}) 
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
+  const [isPostsLoading,setIsPostsLoading] = useState(false)
+
   useEffect(()=>{
     fetchPosts();
   },[]);//массив зависимостей пуст, значит колбек(подтягивание пыстов) сработает лишь один раз (при первичной отрисовки кекпонента)
+
   const bodyInputRef = useRef();
     
   const addNewPostToPosts = (newPost)=>{
@@ -33,8 +37,12 @@ function App() {
   }
 
   async function fetchPosts(){//Функция асинхронная, чтобы можно было использовать await
+    setIsPostsLoading(true);
     const posts = await PostService.getAll();
-    setPosts(posts);
+    setTimeout(()=>{
+      setPosts(posts);
+      setIsPostsLoading(false);
+    }, 1000)
   }
 
   const removePostFromPosts = (post)=>{
@@ -63,11 +71,16 @@ function App() {
         filter={filter}
         setFilter={setFilter}
       />
-      <PostList
-        posts={sortedAndSearchedPosts}
-        title="Спиське постой"
-        removePostFromPosts = {removePostFromPosts}
-      />
+      {isPostsLoading
+        ? <div style={{display: "flex", justifyContent: "center", marginTop: "50"}}>
+            <Loader/>
+          </div>
+        : <PostList
+            posts={sortedAndSearchedPosts}
+            title="Спиське постой"
+            removePostFromPosts = {removePostFromPosts}
+          />
+      }
     </div>
   );
 }
