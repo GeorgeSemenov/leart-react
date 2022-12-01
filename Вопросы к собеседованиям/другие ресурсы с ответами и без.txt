@@ -1,0 +1,5 @@
+Сегодня тоже не плохой ресурс нашёл с вопросами - https://www.fullstack.cafe/
+
+Там ответы только на джуна есть, на остальные грейды можно самому найти ответ)
+
+https://github.com/sudheerj/reactjs-interview-questions
