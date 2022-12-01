@@ -23,11 +23,13 @@ function App() {
     // {id:3, title: "python-post-title", body: "php - is programm language"},
   ]) 
   const [modal,setModal] = useState(false)
+  const [totalCount,setTotalCount] = useState(0)
   const [filter,setFilter] = useState({sort:'',query:''}) 
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
   const [fetchPosts, isPostsLoading, postError] = useFetching(async()=>{
-    const posts = await PostService.getAll();
-    setPosts(posts);})
+    const response = await PostService.getAll();
+    setPosts(response.data);
+  })
 
   useEffect(()=>{
     fetchPosts();
