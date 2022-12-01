@@ -8,9 +8,11 @@ import PostFilter from './components/PostFilter.jsx'
 import MyButton from './components/UI/button/MyButton.jsx'
 import MyModal from './components/UI/MyModal/MyModal.jsx'
 import {usePosts} from './hooks/usePosts.js';
+import {useFetching} from './hooks/useFetching.js';
 import axios from 'axios';
 import PostService from './API/PostService.js';
 import Loader from './components/UI/Loader/Loader.jsx';
+
 
 import './styles/App.css';
 
@@ -23,7 +25,9 @@ function App() {
   const [modal,setModal] = useState(false)
   const [filter,setFilter] = useState({sort:'',query:''}) 
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
-  const [isPostsLoading,setIsPostsLoading] = useState(false)
+  const [fetchPosts, isPostsLoading, postError] = useFetching(async()=>{
+    const posts = await PostService.getAll();
+    setPosts(posts);})
 
   useEffect(()=>{
     fetchPosts();
@@ -34,15 +38,6 @@ function App() {
   const addNewPostToPosts = (newPost)=>{
     setPosts([...posts, newPost])
     setModal(false);
-  }
-
-  async function fetchPosts(){//Функция асинхронная, чтобы можно было использовать await
-    setIsPostsLoading(true);
-    const posts = await PostService.getAll();
-    setTimeout(()=>{
-      setPosts(posts);
-      setIsPostsLoading(false);
-    }, 1000)
   }
 
   const removePostFromPosts = (post)=>{
@@ -71,6 +66,9 @@ function App() {
         filter={filter}
         setFilter={setFilter}
       />
+      {postError &&
+        <h1>Произошола обшибка ${postError}</h1>
+      }
       {isPostsLoading
         ? <div style={{display: "flex", justifyContent: "center", marginTop: "50"}}>
             <Loader/>
