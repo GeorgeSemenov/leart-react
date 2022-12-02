@@ -7,11 +7,12 @@ import MyInput from './components/UI/input/MyInput.jsx'
 import PostFilter from './components/PostFilter.jsx'
 import MyButton from './components/UI/button/MyButton.jsx'
 import MyModal from './components/UI/MyModal/MyModal.jsx'
+import Loader from './components/UI/Loader/Loader.jsx';
+import Pagination from './components/UI/Pagination/Pagination.jsx';
 import {usePosts} from './hooks/usePosts.js';
 import {useFetching} from './hooks/useFetching.js';
 import axios from 'axios';
 import PostService from './API/PostService.js';
-import Loader from './components/UI/Loader/Loader.jsx';
 import {getPageCount,getPagesArray} from './utils/pages.js';
 
 import './styles/App.css';
@@ -22,21 +23,20 @@ function App() {
   const [totalPages,setTotalPages] = useState(0);
   const [filter,setFilter] = useState({sort:'',query:''}) ;
   const [limit,setLimit] = useState(10);
-  const [page,setPage] = useState(1);
+  const [page,setPage] = useState(1);//это номер страницы
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
   let pagesArray = getPagesArray(totalPages);
 
-  const [fetchPosts, isPostsLoading, postError] = useFetching(async()=>{
+  const [fetchPosts, isPostsLoading, postError] = useFetching(async(limit,page)=>{
     const response = await PostService.getAll(limit, page);
     setPosts(response.data);
     const totalCount = response.headers['x-total-count'];
     setTotalPages(getPageCount(totalCount,limit))
   })
-  console.log(`totalPages = ${totalPages}`);
 
   useEffect(()=>{
-    fetchPosts();
-  },[]);//массив зависимостей пуст, значит колбек(подтягивание пыстов) сработает лишь один раз (при первичной отрисовки кекпонента)
+    fetchPosts(limit,page);
+  },[page]);
 
   const bodyInputRef = useRef();
     
@@ -48,6 +48,11 @@ function App() {
   const removePostFromPosts = (post)=>{
     setPosts(posts.filter((item)=>{return item.id !==post.id}))
   }
+
+  const changePage = (page)=>{
+    setPage(page);
+    fetchPosts(limit,page);
+  } 
 
   return (
     <div className="App">
@@ -84,11 +89,7 @@ function App() {
             removePostFromPosts = {removePostFromPosts}
           />
       }
-      <div className="page__wrapper">
-        {
-          pagesArray.map(page=><MyButton className="page">{page}</MyButton>)
-        }
-      </div>
+      <Pagination/>
     </div>
   );
 }
