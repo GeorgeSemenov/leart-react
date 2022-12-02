@@ -12,24 +12,27 @@ import {useFetching} from './hooks/useFetching.js';
 import axios from 'axios';
 import PostService from './API/PostService.js';
 import Loader from './components/UI/Loader/Loader.jsx';
-
+import {getPageCount,getPagesArray} from './utils/pages.js';
 
 import './styles/App.css';
 
 function App() {
-  const [posts,setPosts] = useState([
-    // {id:1, title: "JS-post-title", body: "JavaScript - is programm language"},
-    // {id:2, title: "php-post-title", body: "python - is programm language"},
-    // {id:3, title: "python-post-title", body: "php - is programm language"},
-  ]) 
-  const [modal,setModal] = useState(false)
-  const [totalCount,setTotalCount] = useState(0)
-  const [filter,setFilter] = useState({sort:'',query:''}) 
+  const [posts,setPosts] = useState([]) ;
+  const [modal,setModal] = useState(false);
+  const [totalPages,setTotalPages] = useState(0);
+  const [filter,setFilter] = useState({sort:'',query:''}) ;
+  const [limit,setLimit] = useState(10);
+  const [page,setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
+  let pagesArray = getPagesArray(totalPages);
+
   const [fetchPosts, isPostsLoading, postError] = useFetching(async()=>{
-    const response = await PostService.getAll();
+    const response = await PostService.getAll(limit, page);
     setPosts(response.data);
+    const totalCount = response.headers['x-total-count'];
+    setTotalPages(getPageCount(totalCount,limit))
   })
+  console.log(`totalPages = ${totalPages}`);
 
   useEffect(()=>{
     fetchPosts();
@@ -81,6 +84,11 @@ function App() {
             removePostFromPosts = {removePostFromPosts}
           />
       }
+      <div className="page__wrapper">
+        {
+          pagesArray.map(page=><MyButton className="page">{page}</MyButton>)
+        }
+      </div>
     </div>
   );
 }

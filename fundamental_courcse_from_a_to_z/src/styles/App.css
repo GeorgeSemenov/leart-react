@@ -36,3 +36,11 @@
   transform: translateX(-350px);
   transition: transform 500ms ease-in;
 }
+
+.page__wrapper{
+  margin-top: 30px;
+}
+
+.page{
+
+}
