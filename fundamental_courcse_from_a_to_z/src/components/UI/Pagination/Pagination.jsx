@@ -1,7 +1,9 @@
 import React, {useState,useEffect} from 'react';
+import {getPagesArray} from '../../../utils/pages.js'
 
-function Pagination({page, cahngePage, totalPages, ...props}) {
-  
+function Pagination({page, changePage, totalPages, ...props}) {
+  let pagesArray = getPagesArray(totalPages);  
+
   return(
     <div className="page__wrapper" {...props}>
     {

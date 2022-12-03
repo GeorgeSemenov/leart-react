@@ -13,7 +13,7 @@ import {usePosts} from './hooks/usePosts.js';
 import {useFetching} from './hooks/useFetching.js';
 import axios from 'axios';
 import PostService from './API/PostService.js';
-import {getPageCount,getPagesArray} from './utils/pages.js';
+import {getPageCount} from './utils/pages.js';
 
 import './styles/App.css';
 
@@ -25,7 +25,6 @@ function App() {
   const [limit,setLimit] = useState(10);
   const [page,setPage] = useState(1);//это номер страницы
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
-  let pagesArray = getPagesArray(totalPages);
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(async(limit,page)=>{
     const response = await PostService.getAll(limit, page);
@@ -89,7 +88,11 @@ function App() {
             removePostFromPosts = {removePostFromPosts}
           />
       }
-      <Pagination/>
+      <Pagination
+        page = {page}
+        changePage = {changePage}
+        totalPages = {totalPages}
+      />
     </div>
   );
 }
