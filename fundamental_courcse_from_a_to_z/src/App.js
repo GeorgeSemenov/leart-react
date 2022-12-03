@@ -7,33 +7,36 @@ import MyInput from './components/UI/input/MyInput.jsx'
 import PostFilter from './components/PostFilter.jsx'
 import MyButton from './components/UI/button/MyButton.jsx'
 import MyModal from './components/UI/MyModal/MyModal.jsx'
+import Loader from './components/UI/Loader/Loader.jsx';
+import Pagination from './components/UI/Pagination/Pagination.jsx';
 import {usePosts} from './hooks/usePosts.js';
 import {useFetching} from './hooks/useFetching.js';
 import axios from 'axios';
 import PostService from './API/PostService.js';
-import Loader from './components/UI/Loader/Loader.jsx';
-
+import {getPageCount,getPagesArray} from './utils/pages.js';
 
 import './styles/App.css';
 
 function App() {
-  const [posts,setPosts] = useState([
-    // {id:1, title: "JS-post-title", body: "JavaScript - is programm language"},
-    // {id:2, title: "php-post-title", body: "python - is programm language"},
-    // {id:3, title: "python-post-title", body: "php - is programm language"},
-  ]) 
-  const [modal,setModal] = useState(false)
-  const [totalCount,setTotalCount] = useState(0)
-  const [filter,setFilter] = useState({sort:'',query:''}) 
+  const [posts,setPosts] = useState([]) ;
+  const [modal,setModal] = useState(false);
+  const [totalPages,setTotalPages] = useState(0);
+  const [filter,setFilter] = useState({sort:'',query:''}) ;
+  const [limit,setLimit] = useState(10);
+  const [page,setPage] = useState(1);//это номер страницы
   const sortedAndSearchedPosts = usePosts(posts,filter.sort, filter.query);
-  const [fetchPosts, isPostsLoading, postError] = useFetching(async()=>{
-    const response = await PostService.getAll();
+  let pagesArray = getPagesArray(totalPages);
+
+  const [fetchPosts, isPostsLoading, postError] = useFetching(async(limit,page)=>{
+    const response = await PostService.getAll(limit, page);
     setPosts(response.data);
+    const totalCount = response.headers['x-total-count'];
+    setTotalPages(getPageCount(totalCount,limit))
   })
 
   useEffect(()=>{
-    fetchPosts();
-  },[]);//массив зависимостей пуст, значит колбек(подтягивание пыстов) сработает лишь один раз (при первичной отрисовки кекпонента)
+    fetchPosts(limit,page);
+  },[page]);
 
   const bodyInputRef = useRef();
     
@@ -45,6 +48,11 @@ function App() {
   const removePostFromPosts = (post)=>{
     setPosts(posts.filter((item)=>{return item.id !==post.id}))
   }
+
+  const changePage = (page)=>{
+    setPage(page);
+    fetchPosts(limit,page);
+  } 
 
   return (
     <div className="App">
@@ -81,6 +89,7 @@ function App() {
             removePostFromPosts = {removePostFromPosts}
           />
       }
+      <Pagination/>
     </div>
   );
 }
