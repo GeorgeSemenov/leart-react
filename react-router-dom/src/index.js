@@ -8,7 +8,10 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
-import Root from "./routes/root.jsx";
+import Root, {
+  loader as rootLoader,//Импортируем кроме компонента Root ещё и созданную нами функцию для подгрузки данных (loader)
+  action as rootAction
+} from "./routes/root.jsx";
 import ErrorPage from './routes/error-page.jsx';
 import Contact from './routes/contact.jsx';
 
@@ -17,6 +20,8 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage/>,
+    loader: rootLoader,//функция созданная нами для подгрузки данных (контактов)
+    action: rootAction,//указываем импортирумую функцию action из root.js теперь она будет срабатывать при отправке формы
     children:[
       {
         path: "contacts/:contactId",

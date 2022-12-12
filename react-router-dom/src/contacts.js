@@ -13,16 +13,16 @@ export async function getContacts(query) {
 }
 
 export async function createContact() {
-  await fakeNetwork();
-  let id = Math.random().toString(36).substring(2, 9);
-  let contact = { id, createdAt: Date.now() };
-  let contacts = await getContacts();
-  contacts.unshift(contact);
-  await set(contacts);
-  return contact;
+  await fakeNetwork();//ожидаем какое-то время, затем приступаем к выполнению задачи.
+  let id = Math.random().toString(36).substring(2, 9);//Создаём "уникальны" идентификатор
+  let contact = { id, createdAt: Date.now() };//Создаём объект контакта, с полем id и датой создания
+  let contacts = await getContacts();//Возвращает отсортированный массив кектактов
+  contacts.unshift(contact);//вставляем в начало массива контактов - новый массив.
+  await set(contacts);//Сохраняет в локальное хранилище массив контактов.
+  return contact;//Возвращаем новый массив контактов с новым контактом.
 }
 
-export async function getContact(id) {
+export async function getContact(id) {//Возвращает контакт у которого есть такой id или возвращет null
   await fakeNetwork(`contact:${id}`);
   let contacts = await localforage.getItem("contacts");
   let contact = contacts.find(contact => contact.id === id);
@@ -51,7 +51,7 @@ export async function deleteContact(id) {
 }
 
 function set(contacts) {
-  return localforage.setItem("contacts", contacts);
+  return localforage.setItem("contacts", contacts);//Сохраняет в local storage все контакты
 }
 
 // fake a cache so we don't slow down stuff we've already seen
