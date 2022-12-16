@@ -1,17 +1,16 @@
 import {
-  NavLink,
-  Outlet//Импортируем  Outlet
+  Outlet
 } from 'react-router-dom'
-
+import CustomLink from "./customLink.jsx";
 
 const Layout = function () {
   const setActive =({isActive})=>isActive?'active-link':'';
   return(
     <>
       <header>
-        <NavLink className={setActive} to="/">Home</NavLink>
-        <NavLink className={setActive} to="/someKek">SomeKek</NavLink>
-        <NavLink className={setActive} to="/about">About</NavLink>
+        <CustomLink to="/">Home</CustomLink>
+        <CustomLink to="/someKek">SomeKek</CustomLink>
+        <CustomLink to="/about">About</CustomLink>
       </header>
       <main>
         <Outlet/>{/*Указываем место, куда подгружать дочерний элемент*/}
