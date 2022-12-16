@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.active{
+  color: red;
+  border: 1px solid green;
+  background-color: gray;
+}
+.active-link{
+  color: green;
+  border: 2px solid red;
+}

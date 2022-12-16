@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default const Notfoundpage = () => {
+const Notfoundpage = () => {
     return (
         <div>
             This page doesn't exist. Go <a href="/">home</a>
@@ -8,3 +8,5 @@ export default const Notfoundpage = () => {
         </div>
     )
 }
+
+export default Notfoundpage;
