@@ -7,6 +7,7 @@ import About from './pages/about.jsx';
 import SomeKek from './pages/someKek.jsx';
 import Home from './pages/home.jsx';
 import SinglePage from './pages/singlePage.jsx';
+import BlockPage from './pages/blockPage.jsx';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="someKek" element={<SomeKek/>}/>
           <Route path="singlePage/:category/:title" element={<SinglePage/>}/>
           <Route path="about" element={<About/>}/>
+          <Route path="blockPage" element={<BlockPage/>}/>
         </Route>
       </Routes>
     </>

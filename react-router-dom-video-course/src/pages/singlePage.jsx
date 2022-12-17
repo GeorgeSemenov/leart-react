@@ -3,7 +3,6 @@ import {
 } from 'react-router-dom';
 
 function SinglePage() {
-  console.log(`${JSON.stringify(useParams())}`);
   const {category, title} = useParams();
   return(
     <div>

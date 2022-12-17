@@ -11,6 +11,7 @@ const Layout = function () {
         <CustomLink to="/">Home</CustomLink>
         <CustomLink to="/someKek">SomeKek</CustomLink>
         <CustomLink to="/about">About</CustomLink>
+        <CustomLink to="/blockPage">blockPage</CustomLink>
       </header>
       <main>
         <Outlet/>{/*Указываем место, куда подгружать дочерний элемент*/}
