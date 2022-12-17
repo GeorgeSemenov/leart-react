@@ -20,6 +20,7 @@ export default function App() {
           <Route path="singlePage/:category/:title" element={<SinglePage/>}/>
           <Route path="about" element={<About/>}/>
           <Route path="blockPage" element={<BlockPage/>}/>
+          <Route path="*" element={<Notfoundpage/>}/>
         </Route>
       </Routes>
     </>
