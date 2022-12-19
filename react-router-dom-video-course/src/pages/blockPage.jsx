@@ -8,7 +8,6 @@ function BlockPage() {
       .then(res=>res.json())
       .then(data=>{
           setPosts(data);
-          console.log(`data = ${JSON.stringify(data)}`);
         })
   },[])
   return(

@@ -1,9 +1,10 @@
-import {useParam} from "react-router-dom";
+import {useParams} from "react-router-dom";
 function Post() {
-  
+  const {id} = useParams();
   return(
     <div>
-     тут должен быть title
+      Привет, это пост.
+      id данного поста = {id}
     </div>
   )
 }
