@@ -15,6 +15,8 @@ import BlockPage from './pages/blockPage.jsx';
 import Post from './pages/post.jsx';
 import EditPost from './pages/editPost.jsx';
 import CreateNewPost from './pages/createNewPost.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RequireAuth from './hoc/RequireAuth.jsx';
 
 export default function App() {
   return (
@@ -23,13 +25,22 @@ export default function App() {
         <Route path="/" element={<Layout/>}>
           <Route index element={<Home/>}/>
           <Route path="someKek" element={<SomeKek/>}/>
+          <Route path="/login" element={<LoginPage/>}/>
           <Route path="singlePage/:category/:title" element={<SinglePage/>}/>
           <Route path="about" element={<About/>}/>
           <Route path="about-us" element={<Navigate to="/about" replace/>}/>
           <Route path="blockPage" element={<BlockPage/>}/>
           <Route path="posts/:id" element={<Post/>}/>
-          <Route path="posts/new" element={<CreateNewPost/>}/>
-          <Route path="posts/new/edit" element={<CreateNewPost/>}/>
+          <Route path="posts/new" element={
+            <RequireAuth>
+              <CreateNewPost/>
+            </RequireAuth>
+          }/>
+          <Route path="posts/new/edit" element={
+            <RequireAuth>
+              <CreateNewPost/>
+            </RequireAuth>
+          }/>
           <Route path="posts/:id/edit" element={<EditPost/>}/>
           <Route path="*" element={<Notfoundpage/>}/>
         </Route>
