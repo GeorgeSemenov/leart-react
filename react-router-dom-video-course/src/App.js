@@ -17,6 +17,7 @@ import EditPost from './pages/editPost.jsx';
 import CreateNewPost from './pages/createNewPost.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RequireAuth from './hoc/RequireAuth.jsx';
+import AuthProvider from './hoc/AuthProvider.jsx';
 
 export default function App() {
   return (
@@ -41,7 +42,11 @@ export default function App() {
               <CreateNewPost/>
             </RequireAuth>
           }/>
-          <Route path="posts/:id/edit" element={<EditPost/>}/>
+          <Route path="posts/:id/edit" element={
+            <RequireAuth>
+              <EditPost/>
+            </RequireAuth>
+          }/>
           <Route path="*" element={<Notfoundpage/>}/>
         </Route>
       </Routes>
