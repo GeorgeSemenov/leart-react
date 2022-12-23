@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import BlockFilter from '../components/BlockFilter.jsx';
 import {
   Link,
   useLocation,
@@ -19,7 +20,6 @@ function BlockPage() {
   //изменятся и latest станет равен true
 
   const startFrom = latest? 50 : 1;
-  
 
   useEffect(()=>{
     fetch("https://jsonplaceholder.typicode.com/posts")
@@ -31,17 +31,11 @@ function BlockPage() {
   return(
     <div>
       Это же блокПэйдж!
-      <form 
-        autoComplete="off"
-        onSubmit = {handleSubmit}
-      >
-        <input type="search" name="search"/>
-        <label>
-          <input type="checkbox" name="latest"></input>
-          New only
-        </label>
-        <input type="submit" value="search"/>
-      </form>
+      <BlockFilter
+        postQuery={postQuery}
+        latest = {latest}
+        setSearchParams={setSearchParams}
+      />
       <ul>
         <li>
           <Link to="/posts/new">

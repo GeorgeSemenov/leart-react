@@ -1,6 +1,9 @@
 import {useState} from 'react';
 
-function BlockPage({setSearchParams}) {
+function BlockPage({postQuery, latest, setSearchParams}) {
+  const [search,setSearch] = useState(postQuery)
+  const [checked,setChecked] = useState(latest)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;//записываем данные всей формы в переменную
@@ -21,9 +24,19 @@ function BlockPage({setSearchParams}) {
       autoComplete="off"
       onSubmit = {handleSubmit}
     >
-      <input type="search" name="search"/>
+      <input 
+        type="search" 
+        name="search" 
+        value={search} 
+        onChange = {(e)=>setSearch(e.target.value)}
+      />
       <label>
-        <input type="checkbox" name="latest"></input>
+        <input 
+          type="checkbox" 
+          name="latest" 
+          checked={checked} 
+          onChange = {(e)=>setChecked(e.target.checked)}
+        />
         New only
       </label>
       <input type="submit" value="search"/>
