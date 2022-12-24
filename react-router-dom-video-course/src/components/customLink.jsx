@@ -4,7 +4,10 @@ import {
 } from "react-router-dom";
 
 const CustomLink = ({children,to,...props})=>{
-  const match = useMatch(to);//Возвращает true если адрес в браузерной строке совпадает с адресом внутри атирбута to компонента Link  
+  const match = useMatch({
+    path: to,
+    end: to.length === 1
+  });
   return(
     <Link
       {...props}

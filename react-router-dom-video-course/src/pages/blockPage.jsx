@@ -1,14 +1,13 @@
-import {useState, useEffect} from "react";
 import BlockFilter from '../components/BlockFilter.jsx';
 import {
   Link,
   useLocation,
-  useSearchParams
+  useSearchParams,
+  useLoaderData//Нужен чтобы извлекать данные из loader'ов
 } from 'react-router-dom';
 
 function BlockPage() {
-  console.log(useLocation());
-  const [posts,setPosts] = useState([])
+  const posts = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const postQuery = searchParams.get('post') || '';
@@ -21,13 +20,6 @@ function BlockPage() {
 
   const startFrom = latest? 50 : 1;
 
-  useEffect(()=>{
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then(res=>res.json())
-      .then(data=>{
-          setPosts(data);
-        })
-  },[])
   return(
     <div>
       Это же блокПэйдж!
@@ -60,5 +52,11 @@ function BlockPage() {
     </div>
   )
 }
-
 export default BlockPage;
+
+const blockLoader = async ({request,params})=>{
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts")
+  return res.json();
+}
+
+export {blockLoader};

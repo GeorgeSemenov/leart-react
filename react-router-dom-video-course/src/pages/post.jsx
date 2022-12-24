@@ -1,11 +1,11 @@
 import {
   Link,
-  useParams,
   useNavigate,
+  useLoaderData
 } from "react-router-dom";
 
 function Post() {
-  const {id} = useParams();
+  const id = useLoaderData();
   const navigate = useNavigate(); //Хук возвращает функцию ,которую мы и будем использовать.
   const goBack = () => navigate("/blockPage",{state: "it's my state, baby"}); //Создаём новую функцию ,которая будет вызывать navigate со специальными атрибутами. Можно указать напрямую относительный путь, но это мало чем отличается от Link, но если указывать отрицательные цифры, (-1, -2 ...) то он вернётся ну указанное количество страниц назад. Если же нужно указать движение вперёд, то нужно указывать положительные цифири
 
@@ -26,3 +26,9 @@ function Post() {
 }
 
 export default Post;
+
+const postLoader = ({params})=>{
+  const id = params.id;//Поле id - это имя динамической переменной, указанной в таблице маршрутизации
+  return id;
+}
+export {postLoader};
