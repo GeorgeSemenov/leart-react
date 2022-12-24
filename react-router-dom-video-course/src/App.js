@@ -28,7 +28,16 @@ export default function App() {
           <Route path="someKek" element={<SomeKek/>}/>
           <Route path="/login" element={<LoginPage/>}/>
           <Route path="singlePage/:category/:title" element={<SinglePage/>}/>
-          <Route path="about" element={<About/>}/>
+          <Route path="about/*" element={<About/>}>
+            <Route 
+              path="contacts" 
+              element={<p>Это же кектакты, ё маё</p>}
+            />
+            <Route 
+              path="team" 
+              element={<p>Их двое, а мы одни</p>}
+            />
+          </Route>
           <Route path="about-us" element={<Navigate to="/about" replace/>}/>
           <Route path="blockPage" element={<BlockPage/>}/>
           <Route path="posts/:id" element={<Post/>}/>
