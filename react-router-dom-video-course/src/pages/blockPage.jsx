@@ -1,6 +1,6 @@
 import BlockFilter from '../components/BlockFilter.jsx';
 import {
-  Suspence,//Данный кекпонент позволет обрабатывать объекты от лоадеров, которые использовали хелпер defer
+  Suspense,//Данный кекпонент позволет обрабатывать объекты от лоадеров, которые использовали хелпер defer
   Await,//В этот компонент выкладывается содержимое, которое будет подгружаться со временем
 } from 'react';
 import {
@@ -39,20 +39,29 @@ function BlockPage() {
             Создать новый пост
           </Link>
         </li>
-        {
-          posts.filter(
-            post=>post.title.includes(postQuery) && post.id>=startFrom
-          ).map(post=>
-            <li>
-              <Link 
-                to={`/posts/${post.id}`} 
-                key={post.id}
-              >
-                {post.title}
-              </Link>
-            </li>
-          )
-        }
+        <Suspense fallback={<h2>...Loading</h2>}>
+          <Await resolve={posts}>
+            {
+              (resolvedPosts)=>{console.log(resolvedPosts);
+              return(
+                <>
+                  resolvedPosts.filter(
+                    post=>post.title.includes(postQuery) && post.id>=startFrom
+                  ).map(post=>
+                    <li>
+                      <Link 
+                        to={`/posts/${post.id}`} 
+                        key={post.id}
+                      >
+                        {post.title}
+                      </Link>
+                    </li>
+                  )
+                </>
+              )}
+            }
+          </Await>
+        </Suspense>
       </ul>
     </div>
   )
