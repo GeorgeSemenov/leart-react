@@ -1,9 +1,14 @@
 import BlockFilter from '../components/BlockFilter.jsx';
 import {
+  Suspence,//Данный кекпонент позволет обрабатывать объекты от лоадеров, которые использовали хелпер defer
+  Await,//В этот компонент выкладывается содержимое, которое будет подгружаться со временем
+} from 'react';
+import {
   Link,
   useLocation,
   useSearchParams,
-  useLoaderData//Нужен чтобы извлекать данные из loader'ов
+  useLoaderData,//Нужен чтобы извлекать данные из loader'ов
+  defer // этот элемент позволяет ожидать долгозагружаемые части компонента, в то время как остальные части компонента уже подгрузились.
 } from 'react-router-dom';
 
 function BlockPage() {
@@ -54,9 +59,15 @@ function BlockPage() {
 }
 export default BlockPage;
 
-const blockLoader = async ({request,params})=>{
+const getPosts = async ()=>{
   const res = await fetch("https://jsonplaceholder.typicode.com/posts")
   return res.json();
+}
+
+const blockLoader = async ({request,params})=>{
+  return defer({
+    posts: getPosts()
+  })
 }
 
 export {blockLoader};

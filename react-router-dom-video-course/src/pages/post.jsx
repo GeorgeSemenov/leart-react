@@ -1,7 +1,8 @@
 import {
   Link,
   useNavigate,
-  useLoaderData
+  useLoaderData,
+  defer // этот элемент позволяет ожидать долгозагружаемые части компонента, в то время как остальные части компонента уже подгрузились.
 } from "react-router-dom";
 
 function Post() {
