@@ -8,7 +8,6 @@ import {
   useSearchParams,
   Await,//В этот компонент выкладывается содержимое, которое будет подгружаться со временем
   useLoaderData,//Нужен чтобы извлекать данные из loader'ов
-  defer // этот элемент позволяет ожидать долгозагружаемые части компонента, в то время как остальные части компонента уже подгрузились.
 } from 'react-router-dom';
 
 function BlockPage() {
@@ -42,10 +41,10 @@ function BlockPage() {
         <Suspense fallback={<h2>...Loading</h2>}>
           <Await resolve={posts}>
             {
-              (resolvedPosts)=>{console.log(`resolvedPosts = ${JSON.stringify(resolvedPosts)}`);
+              (resolvedPosts)=>{
               return(
                 <>{
-                  resolvedPosts.posts.filter(
+                  resolvedPosts.filter(
                     post=>post.title.includes(postQuery) && post.id>=startFrom
                   ).map(post=>
                     <li>
@@ -74,9 +73,9 @@ const getPosts = async ()=>{
 }
 
 const blockLoader = async ({request,params})=>{
-  return defer({
+  return {
     posts: getPosts()
-  })
+  }
 }
 
 export {blockLoader};

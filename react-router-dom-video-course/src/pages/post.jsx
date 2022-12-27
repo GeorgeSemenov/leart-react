@@ -2,8 +2,22 @@ import {
   Link,
   useNavigate,
   useLoaderData,
-  defer // этот элемент позволяет ожидать долгозагружаемые части компонента, в то время как остальные части компонента уже подгрузились.
+  defer, // этот элемент позволяет ожидать долгозагружаемые части компонента, в то время как остальные части компонента уже подгрузились.
+  useAsyncValue, //Этот хук позволяет подгружать данные из компонента Await 
+  Await
 } from "react-router-dom";
+
+import {Suspense} from "react";
+
+const LoadPost = ()=>{
+  const post = useAsyncValue(); //Подгружаем данные из компонента Await
+  return (
+    <>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </>
+  )
+}
 
 function Post() {
   const {id,post} = useLoaderData();
@@ -18,6 +32,11 @@ function Post() {
         Go v zad
       </button>
       Привет, это пост 
+      <Suspense fallback={<h2>Пук пук загрузка ... пук пук</h2>}>
+        <Await resolve={post}>
+          <LoadPost/>{/*Отличие от первого метода, в том, что сюда не нужно ничего передавать*/}
+        </Await>
+      </Suspense>
       <h1>{post.title}</h1>
       id данного поста = {id}
       <p>{post.body}</p>
@@ -30,10 +49,22 @@ function Post() {
 
 export default Post;
 
+async function getPostById(id){
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+  return res.json();//обрати внимание, что тут не нужно использовать await, т.к. данные этой функции будут переданы в defer, что уже предполагается, что ответ нужно будет подождать
+  //Для сравнения ты можешь посмотреть как получение поста было реализованно в postLoader
+}
+async function getCommentsByPostId(id){
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`);
+  return res.json();
+}
+
 const postLoader = async ({params})=>{
   const id = params.id;//Поле id - это имя динамической переменной, указанной в таблице маршрутизации
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-  const post = await res.json();
-  return {id,post};
+  return defer({
+    id, 
+    post: getPostById(id),
+    comments: getCommentsByPostId(id)
+  });
 }
 export {postLoader};
