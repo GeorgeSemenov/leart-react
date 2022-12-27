@@ -1,18 +1,18 @@
 import BlockFilter from '../components/BlockFilter.jsx';
 import {
   Suspense,//Данный кекпонент позволет обрабатывать объекты от лоадеров, которые использовали хелпер defer
-  Await,//В этот компонент выкладывается содержимое, которое будет подгружаться со временем
 } from 'react';
 import {
   Link,
   useLocation,
   useSearchParams,
+  Await,//В этот компонент выкладывается содержимое, которое будет подгружаться со временем
   useLoaderData,//Нужен чтобы извлекать данные из loader'ов
   defer // этот элемент позволяет ожидать долгозагружаемые части компонента, в то время как остальные части компонента уже подгрузились.
 } from 'react-router-dom';
 
 function BlockPage() {
-  const posts = useLoaderData();
+  const {posts} = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const postQuery = searchParams.get('post') || '';
@@ -42,10 +42,10 @@ function BlockPage() {
         <Suspense fallback={<h2>...Loading</h2>}>
           <Await resolve={posts}>
             {
-              (resolvedPosts)=>{console.log(resolvedPosts);
+              (resolvedPosts)=>{console.log(`resolvedPosts = ${JSON.stringify(resolvedPosts)}`);
               return(
-                <>
-                  resolvedPosts.filter(
+                <>{
+                  resolvedPosts.posts.filter(
                     post=>post.title.includes(postQuery) && post.id>=startFrom
                   ).map(post=>
                     <li>
@@ -57,7 +57,7 @@ function BlockPage() {
                       </Link>
                     </li>
                   )
-                </>
+                }</>
               )}
             }
           </Await>
