@@ -68,7 +68,24 @@ function BlockPage() {
 export default BlockPage;
 
 const getPosts = async ()=>{
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts")
+  const res = await fetch("https://jsonplaceholder.typicode.com/postsеы")
+  if(!res.ok){
+    // throw new Response('', {status: res.status, statusText: 'Not found!!!'})
+    throw new Response(
+      "Текстовое сообщение, которое попадёт в body", 
+      {
+        status: res.status, 
+        statusText: "Тут будет выходить простой текст, он не так уж и важен"
+      }
+    )
+    // throw new Response(
+    //   "Текстовое сообщение, которое попадёт в body",
+    //   {
+    //     status: res.status,//Тут можно указать статус, или взять этот статус из объекта res
+    //     statusText: "Тут будет выходить простой текст, он не так уж и важен"
+    //   }
+    // )
+  }
   return res.json();
 }
 

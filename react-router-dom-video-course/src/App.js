@@ -19,6 +19,7 @@ import Post, {postLoader} from './pages/post.jsx';
 import EditPost from './pages/editPost.jsx';
 import CreateNewPost from './pages/createNewPost.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import Errorpage from './pages/Errorpage.jsx';
 import RequireAuth from './hoc/RequireAuth.jsx';
 import AuthProvider from './hoc/AuthProvider.jsx';
 
@@ -40,7 +41,12 @@ const router = createBrowserRouter(
         />
        </Route>
       <Route path="about-us" element={<Navigate to="/about" replace/>}/>
-      <Route path="blockPage" element={<BlockPage/>} loader={blockLoader}/>
+      <Route 
+        path="blockPage" 
+        element={<BlockPage/>} 
+        loader={blockLoader} 
+        errorElement={<Errorpage/>}
+      />
       <Route path="posts/:id" element={<Post/>} loader = {postLoader}/>
       <Route path="posts/new" element={
         <RequireAuth>
