@@ -8,6 +8,7 @@ import {
   useSearchParams,
   Await,//В этот компонент выкладывается содержимое, которое будет подгружаться со временем
   useLoaderData,//Нужен чтобы извлекать данные из loader'ов
+  json
 } from 'react-router-dom';
 
 function BlockPage() {
@@ -69,29 +70,28 @@ export default BlockPage;
 
 const getPosts = async ()=>{
   const res = await fetch("https://jsonplaceholder.typicode.com/postsеы")
-  if(!res.ok){
-    // throw new Response('', {status: res.status, statusText: 'Not found!!!'})
-    throw new Response(
-      "Текстовое сообщение, которое попадёт в body", 
-      {
-        status: res.status, 
-        statusText: "Тут будет выходить простой текст, он не так уж и важен"
-      }
-    )
-    // throw new Response(
-    //   "Текстовое сообщение, которое попадёт в body",
-    //   {
-    //     status: res.status,//Тут можно указать статус, или взять этот статус из объекта res
-    //     statusText: "Тут будет выходить простой текст, он не так уж и важен"
-    //   }
-    // )
-  }
+  // if(!res.ok){
+  //   throw new Response(
+  //     "Текстовое сообщение, которое попадёт в body",
+  //     {
+  //       status: res.status,//Тут можно указать статус, или взять этот статус из объекта res
+  //       statusText: "Something goes wrong"//Если тут напишешь русский текст, то Respons создастся с ошибкой, поэтому не надо
+  //     }
+  //   )
+  // }
   return res.json();
 }
 
 const blockLoader = async ({request,params})=>{
+  const posts = getPosts();
+  if(!posts.length){
+    throw json(
+      {message:" not found", reason:"wrong URL" }, 
+      {status: 404}
+    )
+  }
   return {
-    posts: getPosts()
+    posts
   }
 }
 
