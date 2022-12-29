@@ -86,7 +86,7 @@ const blockLoader = async ({request,params})=>{
   const posts = getPosts();
   if(!posts.length){
     throw json(
-      {message:" not found", reason:"wrong URL" }, 
+      {message:" not gay found", reason:"wrong URL" }, 
       {status: 404}
     )
   }
