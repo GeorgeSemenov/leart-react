@@ -11,7 +11,7 @@ function Layout({children,...props}) {
         <ul>
           <li><CustomLink to="/">Главная</CustomLink></li>
           <li><CustomLink to="/notMain">Неглавная</CustomLink></li>
-          <li><CustomLink to="/secondary">Второстепенная</CustomLink></li>
+          <li><CustomLink to="/posts">Пысты</CustomLink></li>
         </ul>
       </header>
       <Outlet/>
