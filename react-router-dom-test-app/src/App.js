@@ -3,7 +3,8 @@ import './App.css';
 import {
   Link,
   Routes,
-  Route
+  Route,
+  Navigate
 } from 'react-router-dom'
 import Layout from './components/Layout.jsx';
 import Main from './pages/Main.jsx';
@@ -19,6 +20,7 @@ function App() {
           <Route index element={<Main/>}/>
           <Route path="notMain" element={<NotMain/>}/>
           <Route path="posts" element={<Posts/>} />
+          <Route path="posts-all" element={<Navigate to="/posts" replace state={{from:"kek puk from from"}}/>} />
           <Route path="posts/:id" element={<Post/>} />
         </Route>
       </Routes>

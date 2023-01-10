@@ -1,7 +1,8 @@
-import {useParams} from "react-router-dom";
+import {useParams,useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 function Post() {
+  const navigate = useNavigate();
   const {id} = useParams();
   const [post,setPost] = useState({})
   useEffect(()=>{
@@ -13,6 +14,11 @@ function Post() {
     <>
       <h1>Post с id = {id}</h1>
       <h2>{post.title}</h2>
+      <button
+        onClick = {()=>navigate(-1,{state:`previous posts id =${id} `})}
+      >
+        go v zad
+      </button>
       <p>
         {post.body}
       </p>
