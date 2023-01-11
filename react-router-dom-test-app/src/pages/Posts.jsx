@@ -5,13 +5,13 @@ function Posts() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [posts,setPosts] = useState([]);
+  const [query,setQuery] = useState('')
   useEffect(()=>{
     fetch("https://jsonplaceholder.typicode.com/posts")
     .then(res=>res.json())
     .then(data=>setPosts(data))
   },[])
-  const query = searchParams.get("post") ;
-  console.log(`query = ${query}`);
+  let searchQuery = searchParams.get("searchQueary") ;
   return(
     <>
       <h1>Посты</h1>
@@ -19,26 +19,41 @@ function Posts() {
         onSubmit={(e)=>{
           e.preventDefault();
           const form = e.target;
-          setSearchParams({"searchQueary":form.search.value});
+          setSearchParams({
+            "searchQueary":form.search.value,
+            "isLatest": form.last.checked
+          });
         }}
       >
         <input
           type="search"
           name="search"
-          onChange = {(e)=>(query.searchQueary = e.target.value)}
-          value={query? (query.searchQueary || ""):""}
+          value = {query}
+          onChange = {(e)=>setQuery(e.target.value)}
         />
+        <label>
+          <input
+            type="checkbox"
+            name="last"
+          />
+          last 60 posts
+        </label>
         <input
           type="submit"
           value="search monthfucker"
         />
       </form>
       <ul>
-        {posts.map(post=><li>
-          <Link to={`${post.id}`}>
-            {post.title}
-          </Link>
-        </li>)}
+        {posts
+          .filter(post=>post.title.includes(query))
+          .map(post=>
+            <li>
+              <Link to={`${post.id}`}>
+                {post.title}
+              </Link>
+            </li>
+          )
+        }
       </ul>
     </>
   )

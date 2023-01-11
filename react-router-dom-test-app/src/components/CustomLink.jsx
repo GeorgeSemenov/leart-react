@@ -4,7 +4,10 @@ import {
 } from "react-router-dom";
 
 function CustomLink({to,children}) {
-  const match = useMatch(to);
+  const match = useMatch({
+    path:to,
+    end: to.length == 1 
+  });
   const clsNme = ()=>match?"puktive":"" 
   console.log(`comparison = ${clsNme()}`);
   return(
