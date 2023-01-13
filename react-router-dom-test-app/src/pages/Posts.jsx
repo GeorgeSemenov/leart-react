@@ -1,17 +1,23 @@
-import {useState, useEffect} from "react";
-import {useParams,Link, useLocation,useSearchParams} from "react-router-dom";
+import {
+  useState, 
+  useEffect,
+  Suspense,
+} from "react";
+import {useParams,
+  Link, 
+  useLocation,
+  useSearchParams,
+  useLoaderData,
+  Await,
+} from "react-router-dom";
 
 function Posts() {
+  const posts = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const [posts,setPosts] = useState([]);
   const [query,setQuery] = useState('')
-  useEffect(()=>{
-    fetch("https://jsonplaceholder.typicode.com/posts")
-    .then(res=>res.json())
-    .then(data=>setPosts(data))
-  },[])
   let searchQuery = searchParams.get("searchQueary") ;
+
   return(
     <>
       <h1>Посты</h1>
@@ -43,19 +49,35 @@ function Posts() {
           value="search monthfucker"
         />
       </form>
-      <ul>
-        {posts
-          .filter(post=>post.title.includes(query))
-          .map(post=>
-            <li>
-              <Link to={`${post.id}`}>
-                {post.title}
-              </Link>
-            </li>
-          )
-        }
-      </ul>
+      <Suspense fallback={<p>Подгружаем посты</p>}>
+        <Await resolve={posts}>
+          <ul>
+            {(resolvedPosts)=>{
+              return
+                <>
+                {
+                  resolvedPosts
+                  .filter(post=>post.title.includes(query))
+                  .map(post=>
+                    <li>
+                      <Link to={`${post.id}`}>
+                        {post.title}
+                      </Link>
+                    </li>
+                  )
+                }</>
+              }
+            }
+          </ul>
+        </Await>
+      </Suspense>
     </>
   )
 }
 export default Posts;
+
+async function postsLoader(){
+  let posts = await fetch("https://jsonplaceholder.typicode.com/posts")
+  return posts;
+}
+export {postsLoader};
