@@ -51,24 +51,24 @@ function Posts() {
       </form>
       <Suspense fallback={<p>Подгружаем посты</p>}>
         <Await resolve={posts}>
-          <ul>
-            {(resolvedPosts)=>{
-              return
-                <>
+          {(resolvedPosts)=>{
+            return
+              <ul>
                 {
-                  resolvedPosts
-                  .filter(post=>post.title.includes(query))
-                  .map(post=>
-                    <li>
-                      <Link to={`${post.id}`}>
-                        {post.title}
-                      </Link>
-                    </li>
-                  )
-                }</>
-              }
+                  <li>{JSON.stringify(resolvedPosts)}</li>
+                  // resolvedPosts
+                  // .filter(post=>post.title.includes(query))
+                  // .map(post=>
+                  //   <li>
+                  //     <Link to={`${post.id}`}>
+                  //       {post.title}
+                  //     </Link>
+                  //   </li>
+                  // )
+                }
+              </ul>
             }
-          </ul>
+          }
         </Await>
       </Suspense>
     </>

@@ -69,21 +69,12 @@ function BlockPage() {
 export default BlockPage;
 
 const getPosts = async ()=>{
-  const res = await fetch("https://jsonplaceholder.typicode.com/postsеы")
-  // if(!res.ok){
-  //   throw new Response(
-  //     "Текстовое сообщение, которое попадёт в body",
-  //     {
-  //       status: res.status,//Тут можно указать статус, или взять этот статус из объекта res
-  //       statusText: "Something goes wrong"//Если тут напишешь русский текст, то Respons создастся с ошибкой, поэтому не надо
-  //     }
-  //   )
-  // }
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts")
   return res.json();
 }
 
 const blockLoader = async ({request,params})=>{
-  const posts = getPosts();
+  const posts = await getPosts();
   if(!posts.length){
     throw json(
       {message:" not gay found", reason:"wrong URL" }, 
