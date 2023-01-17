@@ -9,10 +9,12 @@ import {useParams,
   useSearchParams,
   useLoaderData,
   Await,
+  defer,
+  json,
 } from "react-router-dom";
 
 function Posts() {
-  const posts = useLoaderData();
+  const {posts} = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [query,setQuery] = useState('')
@@ -49,24 +51,25 @@ function Posts() {
           value="search monthfucker"
         />
       </form>
-      <Suspense fallback={<p>Подгружаем посты</p>}>
+      <Suspense fallback={<p>Подгружаем посты для геев</p>}>
         <Await resolve={posts}>
           {(resolvedPosts)=>{
-            return
+            console.log(`resolvedPosts = ${resolvedPosts[0].title}`);
+            return (
               <ul>
                 {
-                  <li>{JSON.stringify(resolvedPosts)}</li>
-                  // resolvedPosts
-                  // .filter(post=>post.title.includes(query))
-                  // .map(post=>
-                  //   <li>
-                  //     <Link to={`${post.id}`}>
-                  //       {post.title}
-                  //     </Link>
-                  //   </li>
-                  // )
+                  resolvedPosts
+                  .filter(post=>post.title.includes(query))
+                  .map(post=>
+                    <li>
+                      <Link to={`${post.id}`}>
+                        {post.title}
+                      </Link>
+                    </li>
+                  )
                 }
               </ul>
+              )
             }
           }
         </Await>
@@ -77,7 +80,17 @@ function Posts() {
 export default Posts;
 
 async function postsLoader(){
-  let posts = await fetch("https://jsonplaceholder.typicode.com/posts")
-  return posts;
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts11");
+  if (!res.ok){
+    throw json(
+      {
+        message: "Обшибка kek kek puk puk",
+        reason: "Обисание обшибкэ"
+      },
+      {status: res.status},
+    )
+  }
+  const posts = await res.json();
+  return defer({posts});
 }
 export {postsLoader};
