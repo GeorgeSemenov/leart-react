@@ -1,22 +1,29 @@
 import React, {useState} from 'react';
 import MyButton from './UI/button/MyButton'
+import {useNavigate} from 'react-router-dom'
 
-function PostItem({removePostFromPosts,...props}){
+function PostItem({removePostFromPosts,post,...props}){
   const removePost = ()=>{
-    removePostFromPosts(props.post)
+    removePostFromPosts(post)
   }
+  const navigate = useNavigate();
   return(
     <div className = "post">
       <div className = "post__content">
-        <strong>{props.post.id}.{props.post.title}</strong>
+        <strong>{post.id}.{post.title}</strong>
         <p> 
-          {props.post.body}
+          {post.body}
         </p>
       </div>
       <div className="post__btns">
         <MyButton
-          onClick ={()=>{removePostFromPosts(props.post)}}
-        >Удалить падлу</MyButton>
+          onClick ={()=>{navigate(`/posts/${post.id}`)}}
+        >Открыть
+        </MyButton>
+        <MyButton
+          onClick ={()=>{removePostFromPosts(post)}}
+        >Удалить падлу
+        </MyButton>
       </div>
     </div>
   )
