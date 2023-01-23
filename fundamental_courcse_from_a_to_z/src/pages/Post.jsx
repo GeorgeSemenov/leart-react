@@ -12,14 +12,24 @@ function Post() {
   const navigate = useNavigate();
   const {id} = useParams();
   const [post,setPost] = useState({})
+  const [comments,setComments] = useState([])
   const [fetchPostById, isLoading, error] = useFetching(
     async (id) =>{
       const resp = await PostService.getPostById(id);
       setPost(resp.data)
     }
   );
+
+  const [fetchComments, isCommentsLoading, CommentsError] = useFetching(
+    async (id) =>{
+      const resp = await PostService.getCommentsByPostId(id);
+      setPost(resp.data)
+    }
+  );
+
   useEffect(()=>{
     fetchPostById(id);
+    fetchComments(id);
   },[])
 
   return(
