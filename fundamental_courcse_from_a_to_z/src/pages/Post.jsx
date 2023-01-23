@@ -23,7 +23,7 @@ function Post() {
   const [fetchComments, isCommentsLoading, CommentsError] = useFetching(
     async (id) =>{
       const resp = await PostService.getCommentsByPostId(id);
-      setPost(resp.data)
+      setComments(resp.data)
     }
   );
 
@@ -46,6 +46,12 @@ function Post() {
               взда
             </MyButton>
           </>
+      }
+      <h2>Кекментарии</h2>
+      {
+        isCommentsLoading
+        ? <Loader/>
+        : comments.map(comment=><p>{comment.id} --- {comment.body}</p>)
       }
     </>
   )

@@ -1,7 +1,7 @@
 import React, {useState,useRef,useMemo, useEffect} from 'react';
 import './styles/App.css';
 import {RouterProvider} from 'react-router-dom';
-import router from './components/appRouter.js';
+import router from './router/index.js';
 
 function App() {
   return(
