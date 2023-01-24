@@ -5,9 +5,14 @@ import {publicRouter, privateRouter} from './router/index.js';
 import {AuthContext} from './context';
 
 function App() {
-  let isAuth = false;
+  const [isAuth,setIsAuth] = useState(false)
   return(
-    <AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        isAuth,
+        setIsAuth
+      }}
+    >
       <RouterProvider router={isAuth? privateRouter: publicRouter}/>
     </AuthContext.Provider>
   )

@@ -29,3 +29,5 @@ export const publicRouter = createBrowserRouter(
     </Route>
   )
 );
+
+export router = isAuth? privateRouter: publicRouter;
