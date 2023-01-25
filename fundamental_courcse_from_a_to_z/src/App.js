@@ -1,7 +1,7 @@
 import React, {useState,useRef,useMemo, useEffect} from 'react';
 import './styles/App.css';
 import {RouterProvider} from 'react-router-dom';
-import {publicRouter, privateRouter} from './router/index.js';
+import AppRouter from './router'
 import {AuthContext} from './context';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         setIsAuth
       }}
     >
-      <RouterProvider router={isAuth? privateRouter: publicRouter}/>
+      <AppRouter/>      
     </AuthContext.Provider>
   )
 }
