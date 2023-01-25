@@ -1,4 +1,5 @@
 import {Link,Outlet} from "react-router-dom";
+import {MyContext} from "../components/Context.js"
 function NotMain() {
   
   return(
@@ -15,7 +16,11 @@ function NotMain() {
           <Link to="contextTest">contextTest srak srak</Link>
         </li>
       </ul>
-      <Outlet/>
+      <MyContext.Provider 
+        value="Просто ты голубь"
+      >
+        <Outlet/>
+      </MyContext.Provider>
     </div>
   )
 }
