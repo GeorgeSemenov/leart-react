@@ -11,6 +11,9 @@ function NotMain() {
         <li>
           <Link to="puk">puk</Link>
         </li>
+        <li>
+          <Link to="contextTest">contextTest srak srak</Link>
+        </li>
       </ul>
       <Outlet/>
     </div>
