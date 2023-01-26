@@ -13,6 +13,7 @@ import Post from "../pages/Post.jsx";
 import Error from '../pages/Error.jsx';
 import {AuthContext} from '../context';
 import {useContext} from "react";
+import Loader from '../components/UI/Loader/Loader.jsx';
 
 const privateRouter = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const privateRouter = createBrowserRouter(
       <Route path="/about" element = {<About/>}/>
       <Route path="/posts" element = {<Posts/>}/>
       <Route path="/posts/:id" element = {<Post/>}/>
+      <Route path="/login" element = {<Navigate to="/posts"/>}/>
       <Route path="/error" element = {<Error/>}/>
     </Route>
   )
@@ -34,7 +36,10 @@ const publicRouter = createBrowserRouter(
 );
 
 export default function AppRouter(){
-  const {isAuth} = useContext(AuthContext);
+  const {isAuth, isLoading} = useContext(AuthContext);
+  if(isLoading){
+    return <Loader/>
+  }
   return(
     <RouterProvider router={isAuth? privateRouter: publicRouter}/>
   )
