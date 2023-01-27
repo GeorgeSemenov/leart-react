@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom';
 import Layout from './components/layout.jsx';
 import './App.css';
-
 import Notfoundpage from './pages/notFoundPage.jsx';
 import About from './pages/about.jsx';
 import SomeKek from './pages/someKek.jsx';
@@ -22,6 +21,11 @@ import LoginPage from './pages/LoginPage.jsx';
 import Errorpage from './pages/Errorpage.jsx';
 import RequireAuth from './hoc/RequireAuth.jsx';
 import AuthProvider from './hoc/AuthProvider.jsx';
+
+//Вначале модуль intersection observer нужно установить 
+//npm install react-intersection-observer --save
+import {useInView} from "react-intersection-observer";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
